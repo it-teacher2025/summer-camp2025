@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вступна Частина: Діджитал-Привітання</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Легкий сірий фон */
+            color: #374151; /* Темніший сірий текст */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        /*.container {
+            @apply max-w-2xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg;
+        }
+        .section-title {
+            @apply text-3xl md:text-4xl font-bold text-blue-700 mb-6 text-center;
+        }
+        .point-title {
+            @apply text-xl md:text-2xl font-medium text-blue-500 mb-2;
+        }*/
+        /* Стилі для таємничої скрині */
+        .treasure-chest {
+            background-color: #8B4513; /* Коричневий колір скрині */
+            border: 5px solid #A0522D; /* Темніша облямівка */
+            border-radius: 15px;
+            width: 250px;
+            height: 150px;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s ease-in-out;
+            margin: 0 auto; /* Центрування */
+        }
+        .treasure-chest:before {
+            content: '🔒'; /* Замок */
+            font-size: 5rem;
+            position: absolute;
+            color: #FFD700; /* Золотий колір */
+            transition: transform 0.5s ease-in-out;
+        }
+        .treasure-chest.opened {
+            background-color: #F4A460; /* Світліший колір після відкриття */
+            border-color: #E6B800; /* Яскравіша облямівка */
+        }
+        .treasure-chest.opened:before {
+            transform: scale(0); /* Зникнення замка */
+        }
+        .treasure-message {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #4CAF50; /* Зелений текст */
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            position: absolute; /* Для позиціонування поверх скрині */
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .treasure-message.show {
+            opacity: 1;
+            transform: translateY(0) translate(-50%, -50%);
+        }
+    </style>
+</head>
+
+<body class="p-4">
+    <header class="w-full mb-3 px-4">
+        <nav class="mx-auto flex items-center justify-between bg-white rounded-xl shadow px-4 py-3   max-w-6xl">
+            <div class="text-lg font-semibold text-blue-700">Вступна частина</div>
+            <div>
+                <a href="./index.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition  mx-4" title="Повернутися на головну">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/></svg> -->
+                    На головну 🏠
+                </a>
+                <a href="./first-main-page.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition" title="Повернутися на головну  mx-4">                
+                    До заняття № 1
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container-fixed space-y-8    max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <section class="text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 px-4 rounded-xl shadow-md">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2">🚀 І. Вступна частина: <br><span class="text-yellow-300">"Діджитал-Привітання"</span></h1>
+            <!-- <p class="text-lg md:text-xl font-light">(10 хв)</p> -->
+        </section>
+
+        <section class="space-y-6">
+            <div>
+                <h2 class="point-title    text-xl md:text-2xl font-medium text-blue-500 mb-2">1. Привітання та розминка</h2>
+                <ul class="list-disc list-inside space-y-1 text-lg">
+                    <li>Вітаю всіх учнів! Запрошую до подорожі у світ програм та кіберзахисту!</li>
+                    <li><b>"Опитування-блискавка":</b> Запитайте, які додатки учні використовують найчастіше на своїх смартфонах/комп'ютерах.</li>
+                    <li><b>Питання:</b> "Хто читав угоду користувача, перш ніж натиснути 'Приймаю'?".</li>
+                </ul>
+            </div>
+            <br><br>
+
+            <div>
+                <h2 class="point-title    text-xl md:text-2xl font-medium text-blue-500 mb-2">2. Анонс теми: "Місія Кібер-Героїв"</h2>
+                <p class="text-lg">Тема заняття: <b>"Місію Кібер-Героїв"</b>. Учні, тут ви навчитесь розбиратися в програмному забезпеченні та захищати свої цифрові скарби.</p>
+                
+                <!-- Інтерактивна таємнича скриня -->
+                <div id="treasureChest" class="treasure-chest mt-8">
+                    <span id="treasureMessage" class="treasure-message text-green-700">Місія розпочата!</span>
+                </div>
+                <p class="text-center mt-2 text-sm text-gray-600"><i>Натисніть на скриню, щоб відкрити її та розпочати місію!</i></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm mt-4    max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <p>Шкільний літній табор, 2025 р.</p>
+    </footer>
+
+    <script>
+        // Отримуємо елементи скрині та повідомлення
+        const treasureChest = document.getElementById('treasureChest');
+        const treasureMessage = document.getElementById('treasureMessage');
+
+        // Додаємо обробник події кліку
+        treasureChest.addEventListener('click', () => {
+            // Додаємо клас 'opened' для зміни стилю скрині
+            treasureChest.classList.add('opened');
+            // Показуємо повідомлення після невеликої затримки
+            setTimeout(() => {
+                treasureMessage.classList.add('show');
+            }, 300); // Затримка, щоб анімація відкриття скрині завершилася
+            // Вимикаємо клік після першого відкриття
+            treasureChest.style.pointerEvents = 'none';
+        });
+    </script>
+
+</body>
+</html>
