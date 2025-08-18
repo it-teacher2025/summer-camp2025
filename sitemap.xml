@@ -2,14 +2,28 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://it-teacher2025.github.io/summer-camp2025/index.html</loc>
-        <lastmod>2025-08-14</lastmod>
+        <lastmod>2025-08-18</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.8</priority>
     </url>
     <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-main-page.html</loc></url>
-    <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-part1-introduction_webpage.html</loc></url>
-    <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-part2-theoretical_part_webpage.html</loc></url>
-    <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-part3-practical_part_webpage.html</loc></url>
-    <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-part4-conclusion_webpage.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-part1-introduction.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-part2-theoretical_part.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-part3-practical_part.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-part4-conclusion.html</loc></url>
     <url><loc>https://it-teacher2025.github.io/summer-camp2025/first-plan.html</loc></url>
+
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/second-main-page.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/second-part1-introduction.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/second-part2-theoretical_part.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/second-part3-practical_part.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/second-part4-conclusion.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/second-plan.html</loc></url>
+
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/third-main-page.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/third-part1-introduction.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/third-part2-theoretical_part.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/third-part3-practical_part.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/third-part4-conclusion.html</loc></url>
+    <url><loc>https://it-teacher2025.github.io/summer-camp2025/third-plan.html</loc></url>
 </urlset>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel Quiz + Командна гра</title>
+  <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    color: #374151;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+
+  .container-main, .container-fixed {
+    max-width: 72rem; /* 1152px */
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px rgba(0,0,0,0.1), 0 4px 6px rgba(0,0,0,0.05);
+  }
+
+  .section-title {
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: #1d4ed8;
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  @media(min-width:768px){
+    .section-title{font-size:2.25rem;}
+  }
+
+  .subsection-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 1rem;
+  }
+  @media(min-width:768px){
+    .subsection-title{font-size:1.875rem;}
+  }
+
+  .point-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #3b82f6;
+    margin-bottom: 0.5rem;
+  }
+  @media(min-width:768px){
+    .point-title{font-size:1.5rem;}
+  }
+
+  /* Навігація */
+  .nav-item, .nav-link{
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+    background:#2563eb;
+    color:#fff;
+    padding:0.5rem 1rem;
+    border-radius:0.5rem;
+    box-shadow:0 1px 2px rgba(0,0,0,0.05);
+    text-decoration:none;
+    margin:0 0.5rem;
+    transition:background-color .2s;
+  }
+  .nav-item:hover, .nav-link:hover{background:#1d4ed8;}
+
+  .lesson-header{
+    text-align:center;
+    background:linear-gradient(to right,#2563eb,#4338ca);
+    color:#fff;
+    padding:1.5rem 1rem;
+    border-radius:0.75rem;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+  }
+
+  /* Game/Interactive */
+  .game-area{
+    border:2px dashed #d1d5db;
+    padding:1rem;
+    border-radius:0.5rem;
+    background:#f9fafb;
+    margin-bottom:1.5rem;
+  }
+
+  .game-card{
+    background:#eff6ff;
+    padding:1rem;
+    border-radius:0.5rem;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+    margin-bottom:1rem;
+    border:1px solid #bfdbfe;
+  }
+
+  .game-button{
+    background:#2563eb;
+    color:#fff;
+    padding:0.5rem 1rem;
+    border-radius:0.5rem;
+    border:none;
+    cursor:pointer;
+    margin-top:0.5rem;
+    margin-right:0.5rem;
+    box-shadow:0 4px 6px rgba(0,0,0,0.1);
+    transition:background-color .3s;
+  }
+  .game-button:hover{background:#1d4ed8;}
+
+  .game-feedback{
+    margin-top:1rem;
+    padding:0.75rem;
+    background:#d1fae5;
+    border-left:4px solid #10b981;
+    color:#047857;
+    border-radius:0.375rem;
+    opacity:0;
+    transition:opacity .5s;
+  }
+  .game-feedback.show{opacity:1;}
+
+  .game-answer{
+    margin-top:0.5rem;
+    padding:0.5rem;
+    background:#f3f4f6;
+    border:1px solid #d1d5db;
+    border-radius:0.375rem;
+    color:#1f2937;
+    display:none;
+    white-space:pre-wrap;
+  }
+  .game-answer.show{display:block;}
+
+  .form-input{
+    padding:0.5rem;
+    border:1px solid #d1d5db;
+    border-radius:0.375rem;
+    width:100%;
+    max-width:20rem;
+  }
+
+  footer{
+    max-width:72rem;
+    margin:1rem auto 0;
+    text-align:center;
+    color:#6b7280;
+    font-size:0.875rem;
+  }
+  footer .card{
+    display:inline-block;
+    padding:0.5rem 0.75rem;
+    border:1px solid #d1d5db;
+    border-radius:0.5rem;
+    background:#fff;
+  }
+</style>
+</head>
+<body class="bg-gray-100 p-6">
+    <!-- Header -->
+   <header class="w-full mb-3 px-4">
+        <nav class="mx-auto flex items-center justify-between bg-white rounded-xl shadow px-4 py-3   max-w-6xl">
+            <div class="text-lg font-semibold text-blue-700">Теоретична частина</div>
+            <div>
+                <a href="./index.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition  mx-4" title="Повернутися на головну">
+                    На головну 🏠
+                </a>
+                <a href="./third-main-page.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition" title="Повернутися на головну  mx-4">                
+                    До заняття № 3
+                </a>
+            </div>
+        </nav>
+    </header>
+
+  <main class="container-fixed space-y-8    max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+    <!-- Шапка розділу -->
+        <section class="text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 px-4 rounded-xl shadow-md">
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-1">🔬 ІІІ. Практична частина / Інтерактив:<br>
+            <span class="text-yellow-300">"Лабораторія СУБД"</span></h1>
+        <!-- <p class="opacity-90">25–30 хв</p> -->
+        </section>
+
+    <!-- A. Проектування та зв'язки: "План Секретної Операції" -->
+        <section id="design-and-relationships" class="space-y-6">
+            <h2 class="subsection-title">А. Проектування та зв'язки: "План Секретної Операції"</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="point-title">1. "Проектуємо Базу Даних Мрії"</h3>
+                    <p class="text-lg mb-2">Розділіться на команди! Спроектуйте просту базу даних для улюблених фільмів. Визначте таблиці, поля та первинні ключі.</p>
+                    <p class="text-sm text-gray-600 italic">На папері або в уяві: які дані про фільм ви б зберігали? Як ви їх організуєте?</p>
+                    
+                    <div class="game-card">
+                        <p class="font-bold text-lg mb-2">Завдання: Дизайн "Моє Кіноклубу"</p>
+                        <p class="mb-2">Щоб організувати фільми, нам потрібні таблиці. Які поля і первинні ключі ви б додали до таблиці **"Фільми"**?</p>
+                        <button class="game-button" onclick="toggleAnswer('movie-table-design')">Показати приклад дизайну</button>
+                        <div id="movie-table-design-feedback" class="game-feedback">
+                            <pre class="game-answer">
+**Таблиця: Фільми**
+    - `ФільмID` (Первинний ключ, Автонумерація)
+    - `Назва Фільму` (Текст)
+    - `Рік Випуску` (Число)
+    - `Жанр` (Текст)
+    - `Рейтинг` (Число, від 1 до 10)
+    - `РежисерID` (Зовнішній ключ, посилання на таблицю "Режисери")
+                            </pre>
+                        </div>
+                        <p class="mt-4 font-bold text-lg mb-2">А як щодо таблиці **"Режисери"** і як її пов'язати з "Фільмами"?</p>
+                        <button class="game-button" onclick="toggleAnswer('director-table-design')">Показати приклад зв'язку</button>
+                        <div id="director-table-design-feedback" class="game-feedback">
+                            <pre class="game-answer">
+**Таблиця: Режисери**
+    - `РежисерID` (Первинний ключ, Автонумерація)
+    - `Ім'я Режисера` (Текст)
+    - `Країна` (Текст)
+
+**Зв'язок:**
+Таблиці "Фільми" та "Режисери" пов'язуються полем **`РежисерID`**.
+(Один режисер може зняти багато фільмів, але кожен фільм має одного режисера).
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br><br>
+
+        <!-- B. Запити та форми: "Місія Витягти Інформацію" -->
+        <section id="queries-and-forms" class="space-y-6 mt-8">
+            <h2 class="subsection-title">Б. Запити та форми: "Місія Витягти Інформацію"</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="point-title">1. "Запит-Виклик"</h3>
+                    <p class="text-lg mb-2">Використайте вашу уявну базу даних фільмів. Давайте зробимо запит!</p>
+                    
+                    <div class="game-card">
+                        <p class="font-bold text-lg mb-2">Завдання: Знайти Топ-Фантастику</p>
+                        <p class="mb-2">Знайдіть **всі фільми жанру "Фантастика" з рейтингом 9 або вище**.</p>
+                        <p class="font-semibold mt-2">Які поля вам потрібні і які критерії ви встановите у запиті Access?</p>
+                        <button class="game-button" onclick="toggleAnswer('query-challenge-1')">Показати рішення для запиту</button>
+                        <div id="query-challenge-1-feedback" class="game-feedback">
+                            <pre class="game-answer">
+**Поля:** `Назва Фільму`, `Жанр`, `Рейтинг`
+**Критерії:**
+    `Жанр` = "Фантастика"
+    `Рейтинг` >= 9
+                            </pre>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div>
+                    <h3 class="point-title">2. "Форма для Детектива"</h3>
+                    <p class="text-lg mb-2">Створіть макет форми для додавання нового фільму. Це допоможе зручно вводити дані!</p>
+                    
+                    <div class="game-card">
+                        <p class="font-bold text-lg mb-2">Завдання: Додати Новий Фільм</p>
+                        <p class="mb-2">Уявіть, що ви додаєте новий фільм до своєї бази даних. Заповніть дані нижче. Після "додавання", ви побачите повідомлення!</p>
+                        
+                        <form id="addMovieForm" class="space-y-3 mt-4">
+                            <div>
+                                <label for="movieTitle" class="block text-sm font-medium text-gray-700">Назва Фільму:</label>
+                                <input type="text" id="movieTitle" class="form-input" placeholder="Назва" required>
+                            </div>
+                            <div>
+                                <label for="movieYear" class="block text-sm font-medium text-gray-700">Рік Випуску:</label>
+                                <input type="number" id="movieYear" class="form-input" placeholder="Рік" required>
+                            </div>
+                            <div>
+                                <label for="movieGenre" class="block text-sm font-medium text-gray-700">Жанр:</label>
+                                <input type="text" id="movieGenre" class="form-input" placeholder="Жанр" required>
+                            </div>
+                            <button type="submit" class="game-button">Додати Фільм до Бази</button>
+                        </form>
+                        <div id="formSubmissionFeedback" class="game-feedback">
+                            <p class="font-bold">Фільм успішно додано до вашої уявної бази даних! ✅</p>
+                            <p class="text-sm mt-1">Використання форм робить введення даних простим та зручним.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+  </main>
+
+  <footer class="text-center text-gray-500 text-sm mt-4 max-w-6xl mx-auto">
+        <p class="card">Шкільний літній табір, 2025 р.</p>
+    </footer>
+
+  <script>
+        // Function to show/hide game feedback (reused from previous pages)
+        function toggleAnswer(idPrefix) {
+            const feedbackElem = document.getElementById(idPrefix + '-feedback');
+            const answerElem = feedbackElem.querySelector('.game-answer');
+
+            if (feedbackElem.classList.contains('show')) {
+                feedbackElem.classList.remove('show');
+                answerElem.classList.remove('show');
+            } else {
+                feedbackElem.classList.add('show');
+                answerElem.classList.add('show');
+            }
+        }
+
+        // --- Form Submission Simulation ---
+        document.getElementById('addMovieForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent actual form submission
+
+            const formFeedback = document.getElementById('formSubmissionFeedback');
+            
+            // Clear inputs for next entry (optional, but good for demo)
+            document.getElementById('movieTitle').value = '';
+            document.getElementById('movieYear').value = '';
+            document.getElementById('movieGenre').value = '';
+
+            // Show feedback message
+            formFeedback.classList.add('show');
+
+            // Hide feedback after a few seconds
+            setTimeout(() => {
+                formFeedback.classList.remove('show');
+            }, 3000); // Hide after 3 seconds
+        });
+
+        // Initial hide of feedback messages
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.game-feedback').forEach(elem => elem.classList.remove('show'));
+        });
+    </script>
+</body>
+</html>

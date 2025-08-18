@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Excel Quiz + Командна гра</title>
+  <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== Core UI components ===== */
+  .card { padding: 1.25rem; background:#fff; border-radius: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,.1); }
+
+  .btn { display:inline-flex; align-items:center; gap:.5rem; padding:.5rem 1rem; border-radius:.5rem; background:#2563eb; color:#fff; font-weight:600; transition: background-color .2s ease; text-decoration:none; }
+  .btn:hover { background:#1d4ed8; }
+
+  .btn-ghost { display:inline-flex; align-items:center; gap:.5rem; padding:.5rem .75rem; border-radius:.5rem; border:1px solid #d1d5db; color:#374151; background:#fff; transition: background-color .2s ease; text-decoration:none; }
+  .btn-ghost:hover { background:#f3f4f6; }
+
+  .feedback { display:none; margin-top:.75rem; }
+  .feedback.show { display:block; }
+
+  .badge { display:inline-block; padding:.25rem .5rem; border-radius:.375rem; color:#fff; font-weight:600; font-size:.875rem; }
+  .badge-ok { background:#16a34a; }
+  .badge-bad { background:#dc2626; }
+
+  /* ===== Page layout / typography ===== */
+  .container-main { max-width: 72rem; width:100%; margin:0 auto; padding:1.5rem; background:#fff; border-radius:1rem; box-shadow:0 4px 6px rgba(0,0,0,.1); }
+  .container-fixed { max-width: 72rem; width:100%; margin:0 auto; padding:1.5rem; background:#fff; border-radius:1rem; box-shadow:0 4px 6px rgba(0,0,0,.1); }
+
+  .section-title { font-size: clamp(1.75rem, 2.5vw, 2.25rem); font-weight:700; color:#1d4ed8; margin-bottom:1.5rem; text-align:center; }
+  .subsection-title { font-size: clamp(1.5rem, 2.2vw, 2rem); font-weight:600; color:#2563eb; margin-bottom:1rem; }
+  .point-title { font-size: clamp(1.125rem, 2vw, 1.5rem); font-weight:500; color:#3b82f6; margin-bottom:.5rem; }
+
+  /* ===== Navigation ===== */
+  .nav-item { display:inline-flex; align-items:center; gap:.5rem; background:#2563eb; color:#fff; padding:.5rem 1rem; border-radius:.5rem; box-shadow:0 2px 6px rgba(0,0,0,.08); text-decoration:none; transition: background-color .2s; margin:0 .5rem; }
+  .nav-item:hover { background:#1d4ed8; }
+
+  /* ===== Gradient header block ===== */
+  .lesson-header { text-align:center; color:#fff; padding:1.5rem 1rem; border-radius:1rem; box-shadow:0 6px 20px rgba(0,0,0,.12); background: linear-gradient(90deg, #2563eb 0%, #4338ca 100%); }
+
+  /* ===== Interactive areas ===== */
+  .game-area { border:2px dashed #d1d5db; padding:1rem; border-radius:.75rem; background:#f9fafb; margin-bottom:1.5rem; }
+  .game-card { background:#eff6ff; padding:1rem; border-radius:.75rem; box-shadow:0 2px 8px rgba(59,130,246,.15); border:1px solid #bfdbfe; margin-bottom:1rem; }
+  .game-button { background:#2563eb; color:#fff; padding:.5rem 1rem; border-radius:.5rem; transition:background-color .2s; box-shadow:0 2px 8px rgba(37,99,235,.25); margin-top:.5rem; margin-right:.5rem; }
+  .game-button:hover { background:#1d4ed8; }
+  .game-feedback { margin-top:.75rem; padding:.75rem; background:#ecfdf5; border-left:4px solid #10b981; color:#047857; border-radius:.5rem; opacity:0; transition:opacity .5s; }
+  .game-feedback.show { opacity:1; }
+  .game-answer { margin-top:.5rem; padding:.5rem; background:#f3f4f6; border:1px solid #e5e7eb; border-radius:.5rem; color:#374151; display:none; }
+  .game-answer.show { display:block; }
+
+  /* ===== Tables ===== */
+  .simulated-table { width:100%; border-collapse: collapse; margin-bottom:1rem; text-align:left; }
+  .simulated-table th, .simulated-table td { border:1px solid #d1d5db; padding:.5rem; }
+  .simulated-table th { background:#e5e7eb; font-weight:600; }
+
+  /* Conditional formatting colors */
+  .conditional-green { background:#dcfce7; border-color:#22c55e; }
+  .conditional-red { background:#fee2e2; border-color:#ef4444; }
+
+  /* Chart placeholder */
+  .chart-placeholder { margin-top:1rem; max-width:100%; height:auto; border-radius:.75rem; box-shadow:0 4px 10px rgba(0,0,0,.12); display:none; }
+  .chart-placeholder.show { display:block; }
+
+  /* ===== Optional: interactive grid from previous page ===== */
+  .complex-table-interactive { width:min(780px, 92vw); height:260px; border-radius:22px; border:6px solid #3b82f6; background:#7cb6ff; position:relative; cursor:pointer; display:flex; align-items:center; justify-content:center; transition: background-color .35s, border-color .35s, box-shadow .35s, transform .15s; box-shadow:0 12px 30px rgba(59,130,246,.25); }
+  .complex-table-interactive::before{ content:""; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background-image: linear-gradient(rgba(255,255,255,.35) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.35) 1px, transparent 1px); background-size: 100% calc(100%/3), calc(100%/4) 100%; background-position: top left, top left; }
+  .complex-table-text{ position:relative; color:#fff; font-weight:800; font-size: clamp(28px, 5vw, 56px); text-align:center; text-shadow:0 2px 6px rgba(0,0,0,.15); }
+  .complex-table-interactive.active{ background:#34d399; border-color:#10b981; box-shadow:0 14px 34px rgba(16,185,129,.28); }
+  .table-reveal-message{ display:none; margin-top:14px; padding:18px 20px; border-left:6px solid #10b981; background:#ecfdf5; border-radius:12px; }
+  .table-reveal-message.show{ display:block; animation:fadeIn .28s ease-out; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px)} to{opacity:1; transform:translateY(0)} }
+
+  /* ===== Drag & Drop (з попередньої сторінки) ===== */
+  .drag-list{ display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+  .draggable{ background:#eef2ff; border:1px dashed #c7d2fe; padding:.55rem .7rem; border-radius:12px; cursor:grab; font-weight:600; }
+  .drop{ background:#fff; border:2px dashed #e5e7eb; border-radius:12px; min-height:56px; display:flex; align-items:center; justify-content:center; padding:.4rem .6rem; }
+  .drop.hover{ background:#eff6ff; border-color:#93c5fd; }
+  .drop.good{ border-color:#10b981; background:#ecfdf5; }
+  .drop.bad{ border-color:#ef4444; background:#fef2f2; }
+
+  input {border: #374151 solid 2px; border-radius: 8px;}
+</style>
+</head>
+<body class="bg-gray-100 p-6">
+    <!-- Header -->
+   <header class="w-full mb-3 px-4">
+        <nav class="mx-auto flex items-center justify-between bg-white rounded-xl shadow px-4 py-3   max-w-6xl">
+            <div class="text-lg font-semibold text-blue-700">Теоретична частина</div>
+            <div>
+                <a href="./index.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition  mx-4" title="Повернутися на головну">
+                    На головну 🏠
+                </a>
+                <a href="./second-main-page.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition" title="Повернутися на головну  mx-4">                
+                    До заняття № 2
+                </a>
+            </div>
+        </nav>
+    </header>
+
+  <main class="container-fixed space-y-8    max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+    <!-- Шапка розділу -->
+        <section class="text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 px-4 rounded-xl shadow-md">
+        <h1 class="text-3xl md:text-4xl font-extrabold mb-1">🔬 ІІІ. Практична частина / Інтерактив:<br>
+            <span class="text-yellow-300">"Лабораторія Excel-Детективів"</span></h1>
+        <!-- <p class="opacity-90">25–30 хв</p> -->
+        </section>
+
+    <h1 class="text-3xl font-bold text-center mb-6">Excel Quiz + Командна гра</h1>
+
+    <!-- A. Класичні питання -->
+    <section class="space-y-5">
+      <h2 class="text-2xl font-semibold text-blue-600">А. Класичні питання</h2>
+
+      <div class="card" id="q1">
+        <h3 class="text-xl font-bold mb-2">А1. Яка функція рахує середнє значення?</h3>
+        <input class="border border-gray-300 rounded-lg px-3 py-2 w-full mb-3" placeholder="Ваша відповідь">
+        <button class="btn" data-check="AVERAGE">Перевірити</button>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <!-- B. Функції та логіка -->
+    <section class="space-y-5">
+      <h2 class="text-2xl font-semibold text-blue-600">Б. Функції та логіка</h2>
+
+      <div class="card" id="q2">
+        <h3 class="text-xl font-bold mb-2">Б1. Яка функція перевіряє умови?</h3>
+        <input class="border border-gray-300 rounded-lg px-3 py-2 w-full mb-3" placeholder="Ваша відповідь">
+        <button class="btn" data-check="IF">Перевірити</button>
+        <div class="feedback"></div>
+      </div>
+    </section>
+
+    <!-- C. Додаткові інтерактиви -->
+    <section class="space-y-5">
+      <h2 class="text-2xl font-semibold text-blue-600">В. Додаткові інтерактиви</h2>
+
+      <!-- В1. Мультивибір -->
+      <div class="card" id="ms-v1">
+        <h3 class="text-xl font-bold mb-2">В1. Оберіть УСІ логічні функції</h3>
+        <label class="flex items-center gap-2 mb-2"><input type="checkbox" data-correct> IF</label>
+        <label class="flex items-center gap-2 mb-2"><input type="checkbox" data-correct> AND</label>
+        <label class="flex items-center gap-2 mb-2"><input type="checkbox" data-correct> OR</label>
+        <label class="flex items-center gap-2 mb-2"><input type="checkbox" data-correct> NOT</label>
+        <label class="flex items-center gap-2 mb-2"><input type="checkbox"> SUM</label>
+        <label class="flex items-center gap-2"><input type="checkbox"> MAX</label>
+        <div class="mt-3 flex gap-2">
+          <button class="btn" data-ms-check="v1">Перевірити</button>
+          <button class="btn btn-ghost" data-ms-reset="v1">Скинути</button>
+        </div>
+        <div id="ms-fb-v1" class="feedback mt-3"></div>
+      </div>
+
+      <!-- В2. Заповни пропуски -->
+      <div class="card" id="fi-v2">
+        <h3 class="text-xl font-bold mb-2">В2. Заповніть пропуски назвами функцій</h3>
+        <ol class="list-decimal ml-6 space-y-2">
+          <li>_____ рахує кількість чисел у діапазоні → <input></li>
+          <li>_____ повертає найменше значення → <input></li>
+        </ol>
+        <div class="mt-3 flex gap-2">
+          <button class="btn" id="fi-check">Перевірити</button>
+          <button class="btn btn-ghost" id="fi-reset">Скинути</button>
+        </div>
+        <div id="fi-fb" class="feedback mt-3"></div>
+      </div>
+
+      <!-- В3. Таймер і Табло -->
+      <!-- <div class="card" id="game-console">
+        <h3 class="text-xl font-bold mb-3">В3. Таймер і Табло команд</h3>
+        <div>
+          <input id="tm-input" type="number" value="60" class="border rounded px-2 py-1"> сек
+          <button class="btn" id="tm-start">Старт</button>
+          <button class="btn btn-ghost" id="tm-pause">Пауза</button>
+          <button class="btn btn-ghost" id="tm-reset">Скинути</button>
+          <span id="tm-show" class="ml-3 font-bold">60 с</span>
+          <div class="w-full h-2 bg-gray-200 mt-2 rounded overflow-hidden">
+            <div id="tm-bar" class="h-2 bg-blue-600 w-0"></div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 mt-4">
+          <div>
+            <input id="t1-name" value="Команда А" class="font-bold">
+            <span id="t1-score" class="ml-2 text-xl">0</span>
+            <div>
+              <button class="btn" data-score="+1" data-team="1">+1</button>
+              <button class="btn btn-ghost" data-score="-1" data-team="1">-1</button>
+              <button class="btn btn-ghost" data-score="reset" data-team="1">Скинути</button>
+            </div>
+          </div>
+          <div>
+            <input id="t2-name" value="Команда Б" class="font-bold">
+            <span id="t2-score" class="ml-2 text-xl">0</span>
+            <div>
+              <button class="btn" data-score="+1" data-team="2">+1</button>
+              <button class="btn btn-ghost" data-score="-1" data-team="2">-1</button>
+              <button class="btn btn-ghost" data-score="reset" data-team="2">Скинути</button>
+            </div>
+          </div>
+        </div>
+        <div id="gc-fb" class="feedback mt-3"></div>
+      </div> -->
+    </section>
+  </main>
+
+  <footer class="text-center text-gray-500 text-sm mt-4 max-w-6xl mx-auto">
+        <p class="card">Шкільний літній табір, 2025 р.</p>
+    </footer>
+
+  <script>
+    // A + B перевірка
+    document.querySelectorAll('[data-check]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const ans = btn.parentElement.querySelector('input').value.trim().toUpperCase();
+        const corr = btn.dataset.check;
+        const fb = btn.parentElement.querySelector('.feedback');
+        if(ans === corr) fb.innerHTML = '<span class="badge badge-ok">Правильно</span>'; 
+        else fb.innerHTML = '<span class="badge badge-bad">Неправильно</span>'; 
+        fb.classList.add('show');
+      });
+    });
+
+    // В1 мультивибір
+    (function(){
+      const root=document.getElementById('ms-v1');
+      const fb=document.getElementById('ms-fb-v1');
+      root.querySelector('[data-ms-check="v1"]').onclick=()=>{
+        const boxes=root.querySelectorAll('input[type=checkbox]');
+        let ok=true; boxes.forEach(b=>{ if(b.checked!==b.hasAttribute('data-correct')) ok=false; });
+        fb.innerHTML=ok?'<span class="badge badge-ok">Правильно</span>':'<span class="badge badge-bad">Є помилки</span>';
+        fb.classList.add('show');
+      };
+      root.querySelector('[data-ms-reset="v1"]').onclick=()=>{ root.querySelectorAll('input').forEach(b=>b.checked=false); fb.classList.remove('show'); };
+    })();
+
+    // В2 пропуски
+    (function(){
+      const fb=document.getElementById('fi-fb');
+      const inputs=document.querySelectorAll('#fi-v2 input');
+      document.getElementById('fi-check').onclick=()=>{
+        const a=inputs[0].value.trim().toUpperCase();
+        const b=inputs[1].value.trim().toUpperCase();
+        if(a==='COUNT' && b==='MIN') fb.innerHTML='<span class="badge badge-ok">Правильно</span>';
+        else fb.innerHTML='<span class="badge badge-bad">Помилка</span> COUNT і MIN';
+        fb.classList.add('show');
+      };
+      document.getElementById('fi-reset').onclick=()=>{inputs.forEach(i=>i.value=''); fb.classList.remove('show');};
+    })();
+
+    // В3 таймер
+    (function(){
+      let total=60, left=60, timer=null;
+      const input=document.getElementById('tm-input');
+      const show=document.getElementById('tm-show');
+      const bar=document.getElementById('tm-bar');
+      const render=()=>{ show.textContent=left+' с'; bar.style.width=((total-left)/total*100)+'%'; };
+      document.getElementById('tm-start').onclick=()=>{ total=parseInt(input.value)||60; if(left===0||left===total) left=total; if(!timer) timer=setInterval(()=>{ if(left>0){left--; render();} else {clearInterval(timer); timer=null; show.textContent='Час!';}},1000); render();};
+      document.getElementById('tm-pause').onclick=()=>{ if(timer){clearInterval(timer); timer=null;} };
+      document.getElementById('tm-reset').onclick=()=>{ if(timer){clearInterval(timer); timer=null;} total=parseInt(input.value)||60; left=total; render(); };
+      render();
+    })();
+
+    // В3 табло
+    (function(){
+      const scores={1:0,2:0};
+      const fb=document.getElementById('gc-fb');
+      document.querySelectorAll('#game-console [data-score]').forEach(btn=>{
+        btn.onclick=()=>{
+          const t=btn.dataset.team;
+          if(btn.dataset.score==='+1') scores[t]++;
+          else if(btn.dataset.score==='-1') scores[t]=Math.max(0,scores[t]-1);
+          else scores[t]=0;
+          document.getElementById('t'+t+'-score').textContent=scores[t];
+          fb.innerHTML='<span class="badge badge-ok">Оновлено</span> ' + document.getElementById('t'+t+'-name').value+': '+scores[t];
+          fb.classList.add('show');
+        };
+      });
+    })();
+  </script>
+</body>
+</html>

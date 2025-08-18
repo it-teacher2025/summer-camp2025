@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Теоретична Частина: Ексел-Майстерня — інтерактив</title>
+  <!-- Inter -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* ==== БАЗОВІ НАЛАШТУВАННЯ ==== */
+    :root {
+      --blue-600:#2563eb; /* Tailwind blue-600 */
+      --blue-700:#1d4ed8; /* Tailwind blue-700 */
+      --indigo-700:#4338ca; /* Tailwind indigo-700 */
+      --yellow-300:#fde047; /* Tailwind yellow-300 */
+      --gray-50:#f9fafb;
+      --gray-100:#f3f4f6;
+      --gray-200:#e5e7eb;
+      --gray-300:#d1d5db;
+      --gray-500:#6b7280;
+      --gray-700:#374151;
+      --gray-800:#1f2937;
+      --emerald-400:#34d399;
+      --emerald-500:#10b981;
+      --emerald-900:#065f46;
+      --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+      --shadow-md:0 4px 6px rgba(0,0,0,.1);
+      --shadow-lg:0 10px 15px rgba(0,0,0,.1), 0 4px 6px rgba(0,0,0,.05);
+      --radius-lg:0.5rem;
+      --radius-xl:0.75rem;
+    }
+
+    html, body {height:100%;}
+    body{
+      font-family:'Inter',sans-serif;
+      background:var(--gray-100);
+      color:var(--gray-700);
+      margin:0;
+      padding:1rem; /* p-4 */
+    }
+
+    /* ==== МЕПІНГ КЛАСІВ З TAILWIND У ЗВИЧАЙНИЙ CSS (лише ті, що використовуються) ==== */
+    .w-full{width:100%;}
+    .mb-3{margin-bottom:0.75rem;}
+    .mt-4{margin-top:1rem;}
+    .mt-2{margin-top:0.5rem;}
+    .mt-1{margin-top:0.25rem;}
+    .mb-2{margin-bottom:0.5rem;}
+    .mb-1{margin-bottom:0.25rem;}
+    .ml-4{margin-left:1rem;}
+    .mx-auto{margin-left:auto;margin-right:auto;}
+    .mx-4{margin-left:1rem;margin-right:1rem;}
+
+    .px-4{padding-left:1rem;padding-right:1rem;}
+    .py-3{padding-top:0.75rem;padding-bottom:0.75rem;}
+    .py-6{padding-top:1.5rem;padding-bottom:1.5rem;}
+    .p-6{padding:1.5rem;}
+
+    .flex{display:flex;}
+    .items-center{align-items:center;}
+    .justify-between{justify-content:space-between;}
+    .inline-flex{display:inline-flex;}
+    .flex-wrap{flex-wrap:wrap;}
+
+    .gap-2{gap:0.5rem;}
+
+    .space-y-8 > * + *{margin-top:2rem;}
+    .space-y-6 > * + *{margin-top:1.5rem;}
+    .space-y-4 > * + *{margin-top:1rem;}
+    .space-y-1 > * + *{margin-top:0.25rem;}
+
+    .bg-white{background:#fff;}
+    .text-white{color:#fff;}
+    .text-gray-500{color:var(--gray-500);}
+    .text-blue-700{color:var(--blue-700);}
+    .text-yellow-300{color:var(--yellow-300);}    
+
+    .rounded-lg{border-radius:var(--radius-lg);} 
+    .rounded-xl{border-radius:var(--radius-xl);} 
+
+    .shadow{box-shadow:var(--shadow-sm);} 
+    .shadow-md{box-shadow:var(--shadow-md);} 
+    .shadow-lg{box-shadow:var(--shadow-lg);} 
+
+    .max-w-6xl{max-width:72rem;} /* 1152px */
+
+    .text-center{text-align:center;}
+
+    .text-lg{font-size:1.125rem;line-height:1.75rem;}
+    .text-3xl{font-size:1.875rem;line-height:2.25rem;}
+    .font-semibold{font-weight:600;}
+    .font-bold{font-weight:700;}
+    .font-extrabold{font-weight:800;}
+    .text-sm{font-size:0.875rem;line-height:1.25rem;}
+
+    /* Респонсив для md:text-4xl */
+    @media (min-width:768px){
+      .md\:text-4xl{font-size:2.25rem;line-height:2.5rem;}
+    }
+
+    /* Градієнти (комбінація класів) */
+    .bg-gradient-to-r.from-blue-600.to-indigo-700{
+      background:linear-gradient(to right,var(--blue-600),var(--indigo-700));
+    }
+
+    /* Кнопки */
+    .transition{transition:all .15s ease-in-out;}
+    .bg-blue-600{background:var(--blue-600);}    
+    .hover\:bg-blue-700:hover{background:var(--blue-700);}    
+    .text-white{color:#fff;}
+
+    /* Списки */
+    .list-disc{list-style-type:disc;}
+    .list-inside{list-style-position:inside;}
+
+    /* Контейнер main */
+    .container-fixed{box-sizing:border-box;}
+
+    /* ==== КАСТОМНІ СТИЛІ ДЛЯ ЕЛЕМЕНТІВ ЦІЄЇ СТОРІНКИ ==== */
+    header nav{border-radius:var(--radius-xl);}
+
+    main.page-shell{
+      max-width:72rem;
+      width:100%;
+      margin:0 auto;
+      padding:1.5rem;
+      background:#fff;
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-lg);
+      display:flex;
+      flex-direction:column;
+      gap:2rem; /* еквівалент space-y-8 */
+    }
+
+    .hero{
+      text-align:center;
+      color:#fff;
+      padding:1.5rem 1rem;
+      border-radius:var(--radius-xl);
+      box-shadow:var(--shadow-md);
+      background:linear-gradient(to right,var(--blue-600),var(--indigo-700));
+    }
+
+    .subsection-title{font-size:1.5rem;font-weight:800;margin:0;}
+    .point-title{font-size:1.25rem;font-weight:700;margin:0;}
+
+    /* Картки завдань */
+    .game-card{
+      background:#fff;
+      border:1px solid var(--gray-200);
+      border-radius:var(--radius-lg);
+      padding:1rem;
+      box-shadow:var(--shadow-sm);
+    }
+
+    .game-button{
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      background:var(--blue-600);
+      color:#fff;
+      padding:0.5rem 1rem;
+      border:none;
+      border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-sm);
+      cursor:pointer;
+      transition:background-color .15s ease-in-out, transform .05s ease-in-out;
+    }
+    .game-button:hover{background:var(--blue-700);} 
+    .game-button:active{transform:translateY(1px);} 
+
+    /* Повідомлення гри */
+    .game-feedback{
+      margin-top:1rem;
+      padding:0.75rem;
+      background-color:#d1fae5; /* emerald-100 */
+      border-left:4px solid var(--emerald-500);
+      color:var(--emerald-900);
+      border-radius:0.375rem;
+      opacity:0;
+      transition:opacity .5s ease-in-out;
+    }
+    .game-feedback.show{opacity:1;}
+
+    .game-answer{
+      margin-top:0.5rem;
+      padding:0.5rem;
+      background-color:var(--gray-100);
+      border:1px solid var(--gray-300);
+      border-radius:0.375rem;
+      color:var(--gray-800);
+      display:none;
+      white-space:pre-wrap;
+    }
+    .game-answer.show{display:block;}
+
+    /* Таблиця (симуляція) */
+    .simulated-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--gray-200);border-radius:var(--radius-lg);overflow:hidden;background:#fff;}
+    .simulated-table thead th{background:var(--gray-50);text-align:left;padding:0.75rem;border-bottom:1px solid var(--gray-200);} 
+    .simulated-table tbody td{padding:0.75rem;border-bottom:1px solid var(--gray-200);} 
+    .simulated-table tbody tr:last-child td{border-bottom:none;} 
+
+    /* Навігація */
+    .nav-link{
+      display:inline-flex;align-items:center;gap:0.5rem;
+      background:var(--blue-600);color:#fff;
+      padding:0.5rem 1rem;border-radius:var(--radius-lg);
+      box-shadow:var(--shadow-sm);text-decoration:none;
+      transition:background-color .15s ease-in-out;
+    }
+    .nav-link:hover{background:var(--blue-700);}    
+
+    /* Футер */
+    footer{max-width:72rem;margin:1rem auto 0;}
+    footer .card{display:inline-block;padding:0.5rem 0.75rem;border:1px solid var(--gray-200);border-radius:var(--radius-lg);background:#fff;}
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="w-full mb-3 px-4">
+    <nav class="mx-auto flex items-center justify-between bg-white rounded-xl shadow px-4 py-3 max-w-6xl">
+      <div class="text-lg font-semibold text-blue-700">Теоретична частина</div>
+      <div>
+        <a href="./index.html" class="nav-link mx-4" title="Повернутися на головну">На головну 🏠</a>
+        <a href="./third-main-page.html" class="nav-link" title="До заняття № 3">До заняття № 3</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="container-fixed max-w-6xl w-full mx-auto page-shell">
+    <!-- Шапка розділу -->
+    <section class="hero">
+      <h1 class="text-3xl md:text-4xl font-extrabold mb-1">🎮 ІІ. Теоретична частина в ігровій формі:<br><span class="text-yellow-300">«Майстерня Баз Даних»</span></h1>
+      <!-- <p class="opacity-90">25–30 хв</p> -->
+    </section>
+
+    <!-- A. Бази даних та СУБД: "Секретні Сховища" -->
+    <section id="database-basics" class="space-y-6">
+      <h2 class="subsection-title text-blue-700">А. Бази даних та СУБД: "Секретні Сховища"</h2>
+      <div class="space-y-4">
+        <div>
+          <h3 class="point-title text-blue-700">1. Що таке база даних (БД) та СУБД? (4 хв)</h3>
+          <ul class="list-disc list-inside ml-4 space-y-1 text-lg">
+            <li><strong>База даних:</strong> "Організоване сховище інформації". Аналогія: це як величезна картотека, де все розкладено по поличках.</li>
+            <li><strong>СКБД (Система Керування Базами Даних):</strong> Програма, яка допомагає працювати з цією картотекою (додавати, знаходити, змінювати дані). Аналогія: це бібліотекар, який знає, де що лежить.</li>
+            <li><strong>Приклади СКБД:</strong> MS Access, MySQL, Oracle. Наголосіть, що MS Access зручний для початківців.</li>
+          </ul>
+        </div>
+        <br>
+
+        <div>
+          <h3 class="point-title text-blue-700">2. Реляційна база даних: "Павутина Знань" (6 хв)</h3>
+          <ul class="list-disc list-inside ml-4 space-y-1 text-lg">
+            <li><strong>Що таке реляційна БД?</strong> Дані зберігаються в **таблицях**, а таблиці пов'язані між собою.</li>
+            <li><strong>Таблиця:</strong> Поясніть, що це як аркуш у Excel з рядками (записи) і стовпцями (поля).</li>
+            <li><strong>Поле (стовпець):</strong> Ім'я (наприклад, "Ім'я", "Прізвище", "Дата народження").</li>
+            <li><strong>Запис (рядок):</strong> Одна повна інформація про об'єкт (наприклад, дані про одного учня).</li>
+            <li><strong>Первинний ключ:</strong> Унікальний ідентифікатор запису (наприклад, "ID студента"). Аналогія: це номер вашого паспорта – він унікальний.</li>
+            <li><strong>Зв'язки між таблицями:</strong> Як різні таблиці (наприклад, "Учні" та "Предмети") можуть бути пов'язані. Аналогія: коли на уроці інформатики бібліотекар дає книги учням, то він зв’язує учнів та книги.</li>
+          </ul>
+          <br>
+          <p class="mt-2 font-semibold text-blue-700">Гра "З'єднай Таблиці":</p>
+          <!-- <p class="mt-1 text-lg">На дошці або роздайте картки з назвами таблиць та можливими полями. Учні у командах "проектують" просту базу даних, визначаючи первинні ключі та запропонувавши, як таблиці можна пов'язати.</p> -->
+           <p class="mt-1 text-lg">"Проектуємо" просту базу даних, визначаючи первинні ключі та запропонуємо, як таблиці можна пов'язати.</p>
+          
+          <div class="game-card">
+            <p class="font-bold text-lg mb-2">Завдання: Зв'язки в бібліотеці</p>
+            <p class="mb-2">Уявіть, що ви створюєте базу даних для бібліотеки. У вас є таблиці "Книги" та "Автори".</p>
+            <p class="font-semibold mt-2">Яке поле може бути первинним ключем для таблиці "Автори", і як ви пов'яжете ці дві таблиці?</p>
+            <button class="game-button" onclick="toggleAnswer('connect-tables')">Показати відповідь</button>
+            <div id="connect-tables-feedback" class="game-feedback">
+              <pre class="game-answer">Для таблиці "Автори" первинним ключем може бути **"ID Автора"** (унікальний номер). Таблиці "Книги" та "Автори" можна пов'язати, додавши поле **"ID Автора"** до таблиці "Книги" як зовнішній ключ. Це дозволить зв'язати кожну книгу з її автором.</pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <br><br>
+
+    <!-- B. Об'єкти баз даних: "Інструменти Детектива" -->
+    <section id="database-objects" class="space-y-6">
+      <h2 class="subsection-title text-blue-700">Б. Об'єкти баз даних: "Інструменти Детектива"</h2>
+      <div class="space-y-4">
+        <div>
+          <h3 class="point-title text-blue-700">1. Таблиці: "Основа Архіва"</h3>
+          <ul class="list-disc list-inside ml-4 space-y-1 text-lg">
+            <li><strong>Заповнення таблиць:</strong> Введення даних.</li>
+            <li><strong>Впорядкування таблиць:</strong> Сортування (за алфавітом, за датою), фільтрація (показати тільки тих, хто народився у червні).</li>
+          </ul>
+          <br>
+          <p class="mt-2 font-semibold text-blue-700">Практика "Впорядкуй Скарби":</p>
+          <!-- <p class="mt-1 text-lg">Надайте учням таблицю даних (або роздайте надруковані бланки). Завдання: відсортувати скарби за датою (від найновіших до найстаріших) або відфільтрувати тільки ті, що мають вагу більше 10 кг.</p> -->
+          <p class="mt-1 text-lg">Завдання: відсортувати скарби за датою (від найновіших до найстаріших) або відфільтрувати тільки ті, що мають вагу більше 10 кг.</p>
+
+          <div class="game-card">
+            <p class="font-bold text-lg mb-2">Завдання: Сортування та Фільтрація Скарбів</p>
+            <table id="treasuresTable" class="simulated-table">
+              <thead>
+                <tr>
+                  <th>Скарб</th>
+                  <th>Вага (кг)</th>
+                  <th>Дата знахідки</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr data-item="Золотий Кубок" data-weight="2.5" data-date="2024-05-10"><td>Золотий Кубок</td><td>2.5</td><td>10.05.2024</td></tr>
+                <tr data-item="Срібна Монета" data-weight="0.1" data-date="2023-11-20"><td>Срібна Монета</td><td>0.1</td><td>20.11.2023</td></tr>
+                <tr data-item="Старовинна Карта" data-weight="0.5" data-date="2024-07-01"><td>Старовинна Карта</td><td>0.5</td><td>01.07.2024</td></tr>
+                <tr data-item="Діамантове Кольє" data-weight="0.3" data-date="2024-06-15"><td>Діамантове Кольє</td><td>0.3</td><td>15.06.2024</td></tr>
+                <tr data-item="Залізний Меч" data-weight="12.0" data-date="2023-09-05"><td>Залізний Меч</td><td>12.0</td><td>05.09.2023</td></tr>
+              </tbody>
+            </table>
+            <div class="flex flex-wrap gap-2">
+              <button class="game-button" onclick="sortTreasures('date')">Сортувати за датою (новіші перші)</button>
+              <button class="game-button" onclick="filterTreasuresByWeight(10)">Фільтрувати: Вага > 10 кг</button>
+              <button class="game-button" onclick="resetTreasuresTable()">Скинути таблицю</button>
+            </div>
+          </div>
+        </div>
+        <br><br>
+
+        <div>
+          <h3 class="point-title text-blue-700">2. Запити: "Шукач Пригод"</h3>
+          <ul class="list-disc list-inside ml-4 space-y-1 text-lg">
+            <li><strong>Що таке запит?</strong> Це питання до бази даних, щоб знайти конкретну інформацію.</li>
+            <li><strong>Приклади запитів:</strong> "Знайти всіх учнів, яким 15 років", "Показати всі книги автора 'Шевченко'".</li>
+          </ul>
+          <br>
+          <p class="mt-2 font-semibold text-blue-700">Гра "Загадки до Бази":</p>
+          <p class="mt-1 text-lg">Послідовно зачитуйте "загадки" (умови для запитів) до уявної бази даних. Команди повинні швидко сформулювати, як би вони "запитали" Access.</p>
+          <br>
+
+          <div class="game-card">
+            <p class="font-bold text-lg mb-2">Загадка: Студенти-Програмісти</p>
+            <p class="mb-2">Уявіть, що у вас є база даних студентів, і ви хочете отримати список **усіх студентів, які відвідують гурток "Програмування"**.</p>
+            <p class="font-semibold mt-2">Які критерії ви б встановили для запиту?</p>
+            <button class="game-button" onclick="toggleAnswer('query1')">Показати рішення</button>
+            <div id="query1-feedback" class="game-feedback">
+              <pre class="game-answer">Поле: `Гурток`, Критерій: `Програмування`</pre>
+            </div>
+          </div>
+          <br>
+          <div class="game-card">
+            <p class="font-bold text-lg mb-2">Загадка: Фільми 2023 року</p>
+            <p class="mb-2">В базі даних фільмів вам потрібно знайти **всі фільми, випущені у 2023 році**, з оцінкою від 8 до 10.</p>
+            <p class="font-semibold mt-2">Які поля та критерії ви використаєте?</p>
+            <button class="game-button" onclick="toggleAnswer('query2')">Показати рішення</button>
+            <div id="query2-feedback" class="game-feedback">
+              <pre class="game-answer">Поле: `Рік Випуску`, Критерій: `2023`
+Поле: `Оцінка`, Критерій: `Between 8 And 10` або `>=8 And <=10`</pre>
+            </div>
+          </div>
+        </div>
+        <br><br>
+
+        <div>
+          <h3 class="point-title text-blue-700">3. Форми та Звіти: "Інтерфейс Детектива" (5 хв)</h3>
+          <ul class="list-disc list-inside ml-4 space-y-1 text-lg">
+            <li><strong>Форми:</strong> "Зручний спосіб вводити та переглядати дані". Аналогія: це як бланк анкети.</li>
+            <li><strong>Звіти:</strong> "Гарне представлення даних для друку або презентації". Аналогія: це як готовий звіт про вашу місію.</li>
+          </ul>
+          <!-- <p class="mt-2 text-lg"><strong>Обговорення:</strong> Запитайте учнів, де вони бачили форми (онлайн-реєстрація, опитування) та звіти (табель успішності, чеки в магазині). Поясніть, що це теж частини баз даних.</p> -->
+          <p class="mt-2 text-lg"><strong>Обговорення:</strong> де ви бачили форми та звіти? Вони теж є частинами баз даних.</p>
+
+          <div class="game-card">
+            <p class="font-bold text-lg mb-2">Завдання: Коли форма, а коли звіт?</p>
+            <p class="mb-2">Оберіть правильний інструмент:</p>
+            <ul class="list-disc list-inside ml-4">
+              <li>Вам потрібно зручно <strong>додавати нових студентів</strong> до бази даних. Що ви використаєте?</li>
+              <li>Вам потрібно <strong>роздрукувати список усіх книг</strong> з бібліотеки у гарному форматі. Що ви використаєте?</li>
+            </ul>
+            <button class="game-button" onclick="toggleAnswer('forms-reports')">Показати відповіді</button>
+            <div id="forms-reports-feedback" class="game-feedback">
+              <pre class="game-answer">Для додавання студентів: <strong>Форма</strong>
+Для друку списку книг: <strong>Звіт</strong></pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-center text-gray-500 text-sm mt-4 max-w-6xl mx-auto">
+    <p class="card">Шкільний літній табір, 2025 р.</p>
+  </footer>
+
+  <script>
+    // Показ/приховування відповідей
+    function toggleAnswer(idPrefix) {
+      const feedbackElem = document.getElementById(idPrefix + '-feedback');
+      const answerElem = feedbackElem.querySelector('.game-answer');
+
+      const isVisible = feedbackElem.classList.contains('show');
+
+      feedbackElem.classList.toggle('show', !isVisible);
+      answerElem.classList.toggle('show', !isVisible);
+    }
+
+    // --- Дані для скарбів ---
+    const initialTreasures = [
+      { item: "Золотий Кубок", weight: 2.5, date: "2024-05-10" },
+      { item: "Срібна Монета", weight: 0.1, date: "2023-11-20" },
+      { item: "Старовинна Карта", weight: 0.5, date: "2024-07-01" },
+      { item: "Діамантове Кольє", weight: 0.3, date: "2024-06-15" },
+      { item: "Залізний Меч", weight: 12.0, date: "2023-09-05" }
+    ];
+
+    function populateTreasuresTable(data) {
+      const tableBody = document.querySelector('#treasuresTable tbody');
+      tableBody.innerHTML = '';
+      data.forEach(treasure => {
+        const row = document.createElement('tr');
+        row.setAttribute('data-item', treasure.item);
+        row.setAttribute('data-weight', treasure.weight);
+        row.setAttribute('data-date', treasure.date);
+        row.innerHTML = `
+          <td>${treasure.item}</td>
+          <td>${treasure.weight}</td>
+          <td>${new Date(treasure.date).toLocaleDateString('uk-UA')}</td>
+        `;
+        tableBody.appendChild(row);
+      });
+    }
+
+    function sortTreasures(criterion) {
+      const currentData = Array.from(document.querySelectorAll('#treasuresTable tbody tr')).map(row => ({
+        item: row.dataset.item,
+        weight: parseFloat(row.dataset.weight),
+        date: row.dataset.date
+      }));
+
+      currentData.sort((a, b) => new Date(b.date) - new Date(a.date));
+      populateTreasuresTable(currentData);
+    }
+
+    function filterTreasuresByWeight(minWeight) {
+      const currentData = Array.from(document.querySelectorAll('#treasuresTable tbody tr')).map(row => ({
+        item: row.dataset.item,
+        weight: parseFloat(row.dataset.weight),
+        date: row.dataset.date
+      }));
+
+      const filteredData = currentData.filter(t => t.weight > minWeight);
+      populateTreasuresTable(filteredData);
+    }
+
+    function resetTreasuresTable() {
+      populateTreasuresTable(initialTreasures);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      populateTreasuresTable(initialTreasures);
+    });
+  </script>
+</body>
+</html>

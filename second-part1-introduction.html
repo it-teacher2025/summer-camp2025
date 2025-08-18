@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вступна Частина: Діджитал-Привітання</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6; /* Легкий сірий фон */
+            color: #374151; /* Темніший сірий текст */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        
+        /* --- Styles for Interactive Complex Table --- */
+        .complex-table-interactive {
+            width: 300px;
+            height: 180px;
+            background-color: #60A5FA; /* Blue color for the table representation */
+            border: 3px solid #3B82F6; /* Darker blue border */
+            border-radius: 12px;
+            position: relative;
+            margin: 40px auto;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem; /* Font size for "Складна таблиця" */
+            color: white;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            overflow: hidden; /* Hide overflow for inner elements */
+        }
+        .complex-table-interactive:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.2), 0 3px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+        .complex-table-interactive.active {
+            background-color: #34d399; /* Green when "opened" */
+            border-color: #10b981; /* Darker green */
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px -3px rgba(0, 0, 0, 0.2), 0 3px 6px -2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Inner grid lines to simulate a table */
+        .complex-table-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 4 columns */
+            grid-template-rows: repeat(3, 1fr);    /* 3 rows */
+            gap: 1px;
+            background-color: rgba(255,255,255,0.2); /* Light grid lines */
+            pointer-events: none; /* Do not interfere with parent click */
+            opacity: 1;
+            transition: opacity 0.3s ease-in-out;
+        }
+        .complex-table-grid > div {
+            background-color: transparent; /* Cells themselves are transparent */
+            border: 0.5px solid rgba(255,255,255,0.3); /* Lighter cell borders */
+        }
+        /* Text overlay */
+        .complex-table-text {
+            position: relative;
+            z-index: 1; /* Ensure text is above grid */
+            pointer-events: none; /* Do not interfere with parent click */
+        }
+
+        /* .table-reveal-message {
+            @apply mt-6 p-4 bg-green-100 border-l-4 border-green-500 text-green-700 rounded-lg shadow-md opacity-0 transition-opacity duration-500 max-w-md mx-auto;
+        } */
+        .table-reveal-message.show {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="p-4">
+    <header class="w-full mb-3 px-4">
+        <nav class="mx-auto flex items-center justify-between bg-white rounded-xl shadow px-4 py-3   max-w-6xl">
+            <div class="text-lg font-semibold text-blue-700">Вступна частина</div>
+            <div>
+                <a href="./index.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition  mx-4" title="Повернутися на головну">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/></svg> -->
+                    На головну 🏠
+                </a>
+                <a href="./second-main-page.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition" title="Повернутися на головну  mx-4">                
+                    До заняття № 2
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container-fixed space-y-8    max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <section class="text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 px-4 rounded-xl shadow-md">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2">🚀 І. Вступна частина: <br><span class="text-yellow-300">"Детективи Даних"</span></h1>
+            <!-- <p class="text-lg md:text-xl font-light">(10 хв)</p> -->
+        </section>
+
+        <section class="space-y-6">
+            <div>
+                <h2 class="point-title    text-xl md:text-2xl font-medium text-blue-500 mb-2">1. Привітання та розминка</h2>
+                <ul class="list-disc list-inside space-y-1 text-lg">
+                    <li>Вітаю всіх учнів!</li>
+                    <li><b>"Опитування-блискавка":</b> хто колись користувався Excel або будь-якою програмою для роботи з таблицями. Для чого? (Можливо, для розкладу уроків, підрахунку балів у грі).</li>
+                    <li><b>Питання:</b> "Чи доводилося вам коли-небудь рахувати щось велике і складне вручну, і як це було?" (Піходимо до ідеї автоматизації в Excel).</li>
+                </ul>
+            </div>
+            <br><br>
+
+            <div>
+                <h2 class="point-title    text-xl md:text-2xl font-medium text-blue-500 mb-2">2. Анонс теми: "Місія Великих Таблиць"</h2>
+                <p class="text-lg">Тема заняття: <b>"Місія Великих Таблиць"</b>. Учні, тут ви навчитесь бути справжніми детективами та магами даних у світі Excel.</p>
+                <p>Excel – це не просто клітинки, а потужний інструмент для "розгадування загадок" та "перетворення чисел на історії".</p>
+                
+                <div class="flex justify-center mt-4">
+                    <!-- Interactive Complex Table Element -->
+                    <div id="complexTableInteractive" class="complex-table-interactive">
+                        <div class="complex-table-grid">
+                            <!-- Cells to simulate grid lines -->
+                            <div></div><div></div><div></div><div></div>
+                            <div></div><div></div><div></div><div></div>
+                            <div></div><div></div><div></div><div></div>
+                        </div>
+                        <span class="complex-table-text">Складна таблиця</span>
+                        <!-- Archive Message - now inside and absolute -->
+                        <div id="archiveMessage" class="archive-message bg-blue-100 border-l-4 border-blue-500 text-blue-700 rounded-lg shadow-md">
+                            <p class="font-bold text-xl">Вітаємо, Детективи Даних! 🕵️‍♀️</p>
+                            <p class="text-sm mt-2">Ця таблиця - лише початок вашої місії з перетворення сирих даних на корисні знання!</p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-center mt-2 text-sm text-gray-600">Натисніть на "Складну таблицю", щоб розкрити її можливості!</p>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm mt-4    max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <p>Шкільний літній табір, 2025 р.</p>
+    </footer>
+
+    <script>
+        const complexTableInteractive = document.getElementById('complexTableInteractive');
+        const archiveMessage = document.getElementById('archiveMessage');
+
+        if (complexTableInteractive && archiveMessage) {
+            // Початково приховуємо повідомлення
+            archiveMessage.style.display = 'none';
+
+            complexTableInteractive.addEventListener('click', () => {
+                const isVisible = archiveMessage.style.display === 'block';
+
+                // Перемикаємо клас активності таблиці
+                complexTableInteractive.classList.toggle('active');
+
+                // Перемикаємо видимість повідомлення
+                archiveMessage.style.display = isVisible ? 'none' : 'block';
+            });
+        }
+    </script>
+
+</body>
+</html>

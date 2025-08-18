@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Теоретична Частина: Кібер-Лабіринт Знань (Drag&Drop)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* === Простий CSS без @apply (бо Play CDN не обробляє @apply) === */
+        body { font-family: 'Inter', sans-serif; background:#f3f4f6; color:#374151; min-height:100vh; }
+        .container-fixed { max-width: 64rem; margin: 0 auto; padding: 1rem 1.5rem 1.5rem; background:#fff; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05); }
+        .subsection-title { font-size: 1.5rem; font-weight: 700; color: #2563eb; margin-bottom: 1rem; }
+        .point-title { font-size: 1.25rem; font-weight: 600; color: #3b82f6; margin-bottom: .25rem; }
+
+        /* Сортування */
+        .game-area { border:2px dashed #d1d5db; padding:1rem; border-radius:.5rem; background:#f9fafb; }
+        .category-box { background:#f3f4f6; border:2px solid #d1d5db; border-radius:.5rem; padding:.75rem; min-height: 120px; transition:border-color .2s ease; }
+        .dropzone { display:flex; flex-wrap:wrap; gap:.5rem; min-height: 56px; padding:.5rem; align-items:flex-start; }
+        .dropzone.highlight { border:2px dashed #60a5fa; background:#eff6ff; }
+
+        .program-card { background:#dbeafe; color:#1e3a8a; padding:.5rem 1rem; border-radius:.5rem; cursor:grab; user-select:none; box-shadow:0 1px 2px rgba(0,0,0,.05); border:2px solid transparent; }
+        .program-card:hover { background:#bfdbfe; }
+        .program-card.selected { outline:3px solid #f59e0b; outline-offset:2px; }
+        .program-card.dragging { opacity:.6; cursor:grabbing; }
+
+        /* Результати перевірки */
+        .correct-card { background:#bbf7d0 !important; border-color:#16a34a !important; color:#065f46 !important; }
+        .incorrect-card { background:#fecaca !important; border-color:#dc2626 !important; color:#7f1d1d !important; }
+
+        .quiz-feedback { margin-top: .75rem; text-align:center; font-weight:700; font-size:1.125rem; }
+        .correct-text { color:#047857; }
+        .incorrect-text { color:#b91c1c; }
+
+        /* Кібер-щит (збережено) */
+        .cyber-shield { width: 200px; height: 220px; background:#f87171; border:5px solid #ef4444; border-radius: 50% / 10%; margin: 40px auto; cursor:pointer; transition: all .5s ease-in-out; display:flex; align-items:center; justify-content:center; font-size:2rem; color:#fff; font-weight:700; text-shadow:2px 2px 4px rgba(0,0,0,.3); box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05); position:relative; }
+        .cyber-shield::after { content:''; position:absolute; bottom:-20px; left:50%; transform:translateX(-50%) rotate(45deg); width:100px; height:100px; background:#f87171; border-bottom:5px solid #ef4444; border-right:5px solid #ef4444; clip-path: polygon(50% 100%, 0% 0%, 100% 0%); z-index:-1; transition: all .5s ease-in-out; }
+        .cyber-shield.active { background:#34d399; border-color:#10b981; transform: scale(1.05); }
+        .cyber-shield.active::after { background:#34d399; border-color:#10b981; }
+        .message-box { margin-top:1rem; padding:1rem; background:#d1fae5; border-left:4px solid #10b981; color:#065f46; border-radius:.5rem; box-shadow:0 1px 2px rgba(0,0,0,.05); opacity:0; transition:opacity .5s ease; }
+        .message-box.show { opacity:1; }
+    </style>
+</head>
+
+<body class="p-4">
+    <header class="w-full mb-3 px-4">
+        <nav class="mx-auto flex items-center justify-between bg-white rounded-xl shadow px-4 py-3   max-w-6xl">
+            <div class="text-lg font-semibold text-blue-700">Вступна частина</div>
+            <div>
+                <a href="./index.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition  mx-4" title="Повернутися на головну">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/></svg> -->
+                    На головну 🏠
+                </a>
+                <a href="./first-main-page.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition" title="Повернутися на головну  mx-4">                
+                    До заняття № 1
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container-fixed space-y-8   max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <section class="text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 px-4 rounded-xl shadow-md">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2">🎮 ІІ. Теоретична частина: <br><span class="text-yellow-300">"Кібер-Лабіринт Знань"</span></h1>
+            <!-- <p class="text-lg md:text-xl font-light">(25–30 хв)</p> -->
+        </section>
+
+        <!-- A. ПЗ -->
+        <section id="software-section" class="space-y-6">
+            <h2 class="subsection-title">А. Програмне забезпечення: "Парад Програм"</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="point-title">1. Що таке ПЗ?</h3>
+                    <p class="text-lg"><strong>Програмне забезпечення (ПЗ)</strong> — це все, що ми бачимо на екрані, і що робить комп'ютер «розумним» (операційні системи, ігри, браузери тощо).</p>
+                    <p class="italic text-gray-600 mt-1">Аналогія: Комп'ютер – це «тіло», а ПЗ – його «мозок».</p>
+                </div>
+                <br><br>
+
+                <div>
+                    <h3 class="point-title">2. Типи ПЗ: "Сортування Програм"</h3>
+                    <p class="text-lg mb-3">Учні об'єднуються на 2–3 команди. Завдання: сортуйте програми за трьома основними типами ПЗ:</p>
+                    <ul class="list-disc list-inside ml-4 space-y-1 text-lg mb-4">
+                        <li><strong>Системне ПЗ:</strong> «Фундаментальні цеглини» (ОС, драйвери). <span class="font-semibold">Приклад:</span> Windows, Android.</li>
+                        <li><strong>Прикладне ПЗ:</strong> «Інструменти для користувача» (ігри, браузери, офісні програми, редактори фото). <span class="font-semibold">Приклад:</span> Word, Chrome.</li>
+                        <li><strong>Інструментальне ПЗ:</strong> «Будівельні інструменти» (мови програмування, середовища розробки). <span class="font-semibold">Приклад:</span> Python, Visual Studio Code.</li>
+                    </ul>
+
+                    <div class="game-area">
+                        <h4 class="text-xl font-semibold mb-3 text-center">Гра: "Розсортуй і поясни"</h4>
+                        <p class="text-center font-bold text-lg mb-2">Як грати:</p>
+                        <ol class="list-decimal list-inside text-base ml-4 mb-4">
+                            <li><strong>Крок 1:</strong> Клацніть на картку з назвою програми (або перетягніть її мишкою). Вона виділиться.</li>
+                            <li><strong>Крок 2:</strong> Клацніть <em>на заголовок або будь-яке місце</em> у потрібній категорії <em>або</em> просто перетягніть картку в блок категорії.</li>
+                            <li><strong>Крок 3:</strong> Повторіть кроки 1–2 для всіх програм.</li>
+                            <li><strong>Крок 4:</strong> Натисніть <strong>«Перевірити сортування»</strong>, щоб побачити результат.</li>
+                        </ol>                    
+
+                        <!-- Картки програм -->
+                        <div id="program-cards-container" class="flex flex-wrap justify-center gap-2 mb-6"></div>
+
+                        <!-- Категорії -->
+                        <div id="categories" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="category-box" data-category-container>
+                                <h5 class="font-bold text-lg mb-2 text-blue-700">Системне ПЗ</h5>
+                                <div class="dropzone" data-category="system"></div>
+                            </div>
+                            <div class="category-box" data-category-container>
+                                <h5 class="font-bold text-lg mb-2 text-blue-700">Прикладне ПЗ</h5>
+                                <div class="dropzone" data-category="app"></div>
+                            </div>
+                            <div class="category-box" data-category-container>
+                                <h5 class="font-bold text-lg mb-2 text-blue-700">Інструментальне ПЗ</h5>
+                                <div class="dropzone" data-category="tool"></div>
+                            </div>
+                        </div>
+
+                        <div class="flex justify-center mt-6 gap-3">
+                            <button id="check-sorting" class="bg-green-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-700 transition-colors font-bold">Перевірити сортування</button>
+                            <button id="reset-sorting" class="bg-gray-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-gray-700 transition-colors font-bold">Скинути</button>
+                        </div>
+                        <p id="sorting-feedback" class="quiz-feedback"></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <br>
+
+        <hr class="border-t-2 border-gray-300 my-8" />
+        <br>
+
+        <!-- B. Інформаційна безпека (без змін по суті) -->
+        <section id="security-section" class="space-y-6">
+            <h2 class="subsection-title">Б. Інформаційна безпека: "Квест Кібер-Шпигунів"</h2>
+            <div class="space-y-4">
+                <div>
+                    <h3 class="point-title">1. Чому це важливо?</h3>
+                    <p class="text-lg">В цифровому світі багато «лиходіїв», які хочуть вкрасти наші дані або пошкодити пристрої. Інформаційна безпека – це наш «щит».</p>
+                    <div id="cyberShield" class="cyber-shield">Щит</div>
+                    <div id="protectionMessage" class="message-box">
+                        <p class="font-bold text-xl">Захищено! Ваші дані в безпеці.</p>
+                        <p class="text-sm mt-2">Пам'ятайте про правила кібербезпеки щодня!</p>
+                    </div>
+                </div>
+                <br>
+
+                <div>
+                    <h3 class="point-title">2. Вороги кіберсвіту: "Впізнай зловмисника"</h3>
+                    <p class="text-lg">Розглянемо основних «ворогів» та спробуємо їх ідентифікувати!</p>
+                    <ul class="list-disc list-inside ml-4 space-y-1 text-lg mb-4">
+                        <li><strong>Віруси:</strong> «Заражають» файли.</li>
+                        <li><strong>Трояни:</strong> Маскуються під корисні програми, але всередині – шкода.</li>
+                        <li><strong>Spyware:</strong> Таємно збирають інформацію.</li>
+                        <li><strong>Ransomware:</strong> Шифрують файли і вимагають викуп.</li>
+                        <li><strong>Фішинг:</strong> Виманює ваші дані під виглядом відомих сервісів.</li>
+                        <li><strong>Соціальна інженерія:</strong> Психологічні маніпуляції.</li>
+                    </ul>
+
+                    <div class="game-area">
+                        <h4 class="text-xl font-semibold mb-3 text-center">Гра: "Хто це?"</h4>
+                        <p class="text-center font-bold text-lg mb-2">Як грати:</p>
+                        <ol class="list-decimal list-inside text-base ml-4 mb-4">
+                            <li><strong>Крок 1:</strong> Прочитайте опис «ворога».</li>
+                            <li><strong>Крок 2:</strong> Натисніть на правильну відповідь.</li>
+                            <li><strong>Krok 3:</strong> Отримайте зворотний зв'язок.</li>
+                            <li><strong>Krok 4:</strong> «Наступне питання» для продовження.</li>
+                        </ol>
+                        <div id="quiz-question" class="text-lg font-medium mb-4 text-center"></div>
+                        <div id="quiz-options" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-4"></div>
+                        <p id="quiz-feedback" class="quiz-feedback"></p>
+                        <div class="flex justify-center mt-4">
+                            <button id="next-question" class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-blue-700 transition-colors font-bold">Наступне питання</button>
+                        </div>
+                        <p id="quiz-score" class="text-center text-lg font-bold mt-4">Рахунок: 0/0</p>
+                    </div>
+                </div>
+                <br><br>
+
+                <div>
+                    <h3 class="point-title">3. Зброя Кібер-Героя: "Арсенал захисту"</h3>
+                    <p class="text-lg mb-4">Натисніть на елемент, щоб дізнатися більше.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <div class="p-4 rounded hover:bg-blue-50 cursor-pointer border" data-info="Антивірус: ловить віруси та інше шкідливе ПЗ. Оновлюйте регулярно!">
+                            <h4 class="font-bold text-lg text-blue-700">Антивірус</h4>
+                            <p class="text-sm text-gray-600">Натисніть, щоб дізнатися більше</p>
+                        </div>
+                        <div class="p-4 rounded hover:bg-blue-50 cursor-pointer border" data-info="Брандмауер: контролює мережевий трафік, блокує небажані з'єднання.">
+                            <h4 class="font-bold text-lg text-blue-700">Брандмауер</h4>
+                            <p class="text-sm text-gray-600">Натисніть, щоб дізнатися більше</p>
+                        </div>
+                        <div class="p-4 rounded hover:bg-blue-50 cursor-pointer border" data-info="Надійні паролі: мінімум 12 символів, різні типи символів, унікальні для кожного сервісу.">
+                            <h4 class="font-bold text-lg text-blue-700">Надійні паролі</h4>
+                            <p class="text-sm text-gray-600">Натисніть, щоб дізнатися більше</p>
+                        </div>
+                        <div class="p-4 rounded hover:bg-blue-50 cursor-pointer border" data-info="2FA: додатковий код з телефона або ключа безпеки.">
+                            <h4 class="font-bold text-lg text-blue-700">Двофакторна автентифікація</h4>
+                            <p class="text-sm text-gray-600">Натисніть, щоб дізнатися більше</p>
+                        </div>
+                        <div class="p-4 rounded hover:bg-blue-50 cursor-pointer border" data-info="Резервні копії: повернуть важливі дані у разі втрати.">
+                            <h4 class="font-bold text-lg text-blue-700">Резервне копіювання</h4>
+                            <p class="text-sm text-gray-600">Натисніть, щоб дізнатися більше</p>
+                        </div>
+                        <div class="p-4 rounded hover:bg-blue-50 cursor-pointer border" data-info="Безпечний інтернет: перевіряйте HTTPS, уникайте підозрілих посилань і публічних Wi‑Fi без VPN.">
+                            <h4 class="font-bold text-lg text-blue-700">Безпечний інтернет</h4>
+                            <p class="text-sm text-gray-600">Натисніть, щоб дізнатися більше</p>
+                        </div>
+                    </div>
+                    <p id="arsenal-info-display" class="quiz-feedback text-blue-800"></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm mt-4    max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <p>Шкільний літній табір, 2025 р.</p>
+    </footer>
+
+    <script>
+        // ==== Парад програм: логіка сортування + Drag&Drop ====
+        const programs = [
+          { name: 'Google Chrome', type: 'app' },
+          { name: 'Microsoft Word', type: 'app' },
+          { name: 'Windows 11', type: 'system' },
+          { name: 'Minecraft', type: 'app' },
+          { name: 'Драйвер принтера', type: 'system' },
+          { name: 'Python', type: 'tool' },
+          { name: 'Linux Ubuntu', type: 'system' },
+          { name: 'Adobe Photoshop', type: 'app' },
+          { name: 'Visual Studio Code', type: 'tool' },
+          { name: 'Android OS', type: 'system' },
+        ];
+
+        const programCardsContainer = document.getElementById('program-cards-container');
+        const categoriesWrapper = document.getElementById('categories');
+        const checkSortingBtn = document.getElementById('check-sorting');
+        const resetSortingBtn = document.getElementById('reset-sorting');
+        const sortingFeedback = document.getElementById('sorting-feedback');
+
+        let selectedProgram = null; // для кліку
+        let draggingCard = null;    // для DnD
+
+        function createProgramCard(program) {
+            const card = document.createElement('div');
+            card.className = 'program-card';
+            card.textContent = program.name;
+            card.dataset.programName = program.name;
+            card.dataset.programType = program.type;
+            card.draggable = true;
+
+            // Клік-вибір
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.program-card.selected').forEach(el => el.classList.remove('selected'));
+                card.classList.add('selected');
+                selectedProgram = card;
+                sortingFeedback.textContent = '';
+                sortingFeedback.className = 'quiz-feedback';
+            });
+
+            // Drag & Drop події
+            card.addEventListener('dragstart', (e) => {
+                draggingCard = card;
+                card.classList.add('dragging');
+                e.dataTransfer.setData('text/plain', program.name);
+                e.dataTransfer.effectAllowed = 'move';
+            });
+            card.addEventListener('dragend', () => {
+                draggingCard = null;
+                card.classList.remove('dragging');
+                document.querySelectorAll('.dropzone').forEach(z => z.classList.remove('highlight'));
+            });
+
+            return card;
+        }
+
+        // Ініціалізація карток
+        programs.forEach(p => programCardsContainer.appendChild(createProgramCard(p)));
+
+        // Делегування кліку по категоріях (як і раніше)
+        categoriesWrapper.addEventListener('click', (e) => {
+            const box = e.target.closest('[data-category-container]');
+            if (!box) return;
+            const dropzone = box.querySelector('[data-category]');
+            if (!selectedProgram) {
+                sortingFeedback.textContent = 'Спершу оберіть картку програми або перетягніть її.';
+                sortingFeedback.className = 'quiz-feedback incorrect-text';
+                return;
+            }
+            moveCardToZone(selectedProgram, dropzone);
+        });
+
+        // Drag & Drop на зонах
+        document.querySelectorAll('.dropzone').forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                zone.classList.add('highlight');
+                e.dataTransfer.dropEffect = 'move';
+            });
+            zone.addEventListener('dragleave', () => zone.classList.remove('highlight'));
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                zone.classList.remove('highlight');
+                if (draggingCard) moveCardToZone(draggingCard, zone);
+            });
+        });
+
+        function moveCardToZone(card, zone){
+            const category = zone.dataset.category;
+            zone.appendChild(card);
+            card.dataset.assignedCategory = category;
+            card.classList.remove('selected');
+            selectedProgram = null;
+            sortingFeedback.textContent = '';
+            // Скидаємо індикатори правильності для повторної перевірки
+            card.classList.remove('correct-card','incorrect-card');
+        }
+
+        // Перевірка сортування
+        checkSortingBtn.addEventListener('click', () => {
+            document.querySelectorAll('.program-card').forEach(card => {
+                card.classList.remove('correct-card', 'incorrect-card');
+            });
+
+            let correctCount = 0;
+            const totalPrograms = programs.length;
+
+            programs.forEach(program => {
+                const card = document.querySelector(`[data-program-name="${program.name}"]`);
+                if (!card) return;
+                if (card.dataset.assignedCategory === program.type) {
+                    correctCount++;
+                    card.classList.add('correct-card');
+                } else {
+                    card.classList.add('incorrect-card');
+                }
+            });
+
+            if (correctCount === totalPrograms) {
+                sortingFeedback.textContent = `Чудово! Всі програми відсортовані правильно (${correctCount}/${totalPrograms})! 🎉`;
+                sortingFeedback.className = 'quiz-feedback correct-text';
+            } else {
+                sortingFeedback.textContent = `Є помилки. Правильно відсортовано ${correctCount} з ${totalPrograms}. Спробуйте ще!`;
+                sortingFeedback.className = 'quiz-feedback incorrect-text';
+            }
+        });
+
+        // Скидання
+        resetSortingBtn.addEventListener('click', () => {
+            sortingFeedback.textContent = '';
+            document.querySelectorAll('.program-card').forEach(card => {
+                programCardsContainer.appendChild(card);
+                delete card.dataset.assignedCategory;
+                card.classList.remove('correct-card','incorrect-card','selected');
+            });
+        });
+
+        // ==== Кіберквест (як було) ====
+        const quizQuestions = [
+            { question: 'Це шкідлива програма, яка маскується під корисну програму або файл. Вона не розмножується самостійно, але може красти дані або відкривати доступ до системи.', options: ['Вірус', 'Троян', 'Фішинг', 'Програма-вимагач'], answer: 'Троян' },
+            { question: 'Цей вид атаки полягає у надсиланні фальшивих листів або повідомлень, які виглядають як від надійних джерел, щоб виманити особисту інформацію.', options: ['Вірус', 'Шпигунська програма', 'Фішинг', 'Ransomware'], answer: 'Фішинг' },
+            { question: 'Програма, яка шифрує файли на комп’ютері та вимагає викуп за розшифрування.', options: ['Троян', 'Вірус', 'Програма-вимагач', 'Шпигунська програма'], answer: 'Програма-вимагач' },
+            { question: 'Найпоширеніший тип шкідливих програм, що прикріплюються до інших файлів і поширюються під час запуску заражених файлів.', options: ['Фішинг', 'Вірус', 'Соціальна інженерія', 'Троян'], answer: 'Вірус' },
+            { question: 'Техніка психологічних маніпуляцій, щоб змусити людей виконувати певні дії або розголошувати конфіденційну інформацію.', options: ['Шпигунська програма', 'Соціальна інженерія', 'Вірус', 'Ransomware'], answer: 'Соціальна інженерія' },
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answeredQuestions = 0;
+
+        const quizQuestionElem = document.getElementById('quiz-question');
+        const quizOptionsElem = document.getElementById('quiz-options');
+        const quizFeedbackElem = document.getElementById('quiz-feedback');
+        const nextQuestionBtn = document.getElementById('next-question');
+        const quizScoreElem = document.getElementById('quiz-score');
+
+        function loadQuestion() {
+            if (currentQuestionIndex < quizQuestions.length) {
+                const q = quizQuestions[currentQuestionIndex];
+                quizQuestionElem.textContent = q.question;
+                quizOptionsElem.innerHTML = '';
+                q.options.forEach(option => {
+                    const btn = document.createElement('button');
+                    btn.className = 'px-4 py-3 rounded-lg border shadow-sm bg-white hover:bg-gray-100 transition cursor-pointer text-lg font-medium text-center';
+                    btn.textContent = option;
+                    btn.dataset.answer = option;
+                    btn.addEventListener('click', handleAnswerClick);
+                    quizOptionsElem.appendChild(btn);
+                });
+                quizFeedbackElem.textContent = '';
+                nextQuestionBtn.style.display = 'none';
+                updateScoreDisplay();
+            } else {
+                quizQuestionElem.textContent = 'Квест завершено!';
+                quizOptionsElem.innerHTML = '';
+                quizFeedbackElem.textContent = `Ваш фінальний рахунок: ${score}/${quizQuestions.length}`;
+                quizFeedbackElem.className = 'quiz-feedback text-2xl correct-text';
+                nextQuestionBtn.style.display = 'none';
+            }
+        }
+
+        function handleAnswerClick(e) {
+            const selected = e.target;
+            const correct = quizQuestions[currentQuestionIndex].answer;
+            Array.from(quizOptionsElem.children).forEach(btn => { btn.disabled = true; btn.style.pointerEvents = 'none'; });
+            answeredQuestions++;
+            if (selected.dataset.answer === correct) {
+                selected.classList.add('bg-green-500', 'text-white');
+                quizFeedbackElem.textContent = 'Правильно! 💪';
+                quizFeedbackElem.className = 'quiz-feedback correct-text';
+                score++;
+            } else {
+                selected.classList.add('bg-red-500', 'text-white');
+                const right = quizOptionsElem.querySelector(`[data-answer="${correct}"]`);
+                if (right) right.classList.add('bg-green-500', 'text-white');
+                quizFeedbackElem.textContent = `Неправильно. Правильна відповідь: "${correct}".`;
+                quizFeedbackElem.className = 'quiz-feedback incorrect-text';
+            }
+            updateScoreDisplay();
+            nextQuestionBtn.style.display = 'inline-flex';
+        }
+
+        function updateScoreDisplay() { quizScoreElem.textContent = `Рахунок: ${score}/${answeredQuestions}`; }
+
+        nextQuestionBtn.addEventListener('click', () => { currentQuestionIndex++; loadQuestion(); });
+        window.addEventListener('load', loadQuestion);
+
+        // Арсенал
+        const arsenalCards = document.querySelectorAll('[data-info]');
+        const arsenalInfoDisplay = document.getElementById('arsenal-info-display');
+        arsenalCards.forEach(card => card.addEventListener('click', () => {
+            arsenalInfoDisplay.textContent = card.dataset.info;
+            arsenalInfoDisplay.className = 'quiz-feedback text-blue-800';
+        }));
+
+        // Кібер-щит
+        const cyberShield = document.getElementById('cyberShield');
+        const protectionMessage = document.getElementById('protectionMessage');
+        cyberShield.addEventListener('click', () => {
+            cyberShield.classList.toggle('active');
+            protectionMessage.classList.toggle('show', cyberShield.classList.contains('active'));
+        });
+    </script>
+</body>
+</html>

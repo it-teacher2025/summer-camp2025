@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Підбиття підсумків: Excel-Знатоки</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+        /* .container {
+            @apply max-w-2xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg;
+        } */
+        .certificate-card {
+            background: linear-gradient(135deg, #facc15, #f59e0b);
+            padding: 2rem;
+            border-radius: 1rem;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            border: 4px solid #d97706;
+            max-width: 500px;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .certificate-card::before {
+            content: '📊';
+            position: absolute;
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.2);
+
+            top: -20px;
+            left: -20px;
+            transform: rotate(-25deg);
+        }
+        .certificate-card::after {
+            content: '✨';
+            position: absolute;
+            font-size: 5rem;
+            color: rgba(255, 255, 255, 0.2);
+
+            bottom: -20px;
+            right: -20px;
+            transform: rotate(25deg);
+        }
+        .certificate-card p { 
+            position: relative; 
+            z-index: 1;           /* текст над іконкою */
+        }
+        .certificate-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: white;
+            text-shadow: 1px 2px 3px rgba(0,0,0,0.4);
+        }
+        .certificate-subtitle {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 1px 2px 3px rgba(0,0,0,0.4);
+        }
+        .certificate-text {
+            font-size: 1.1rem;
+            color: #1f2937;
+        }
+        .certificate-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1e3a8a;
+            margin: 0.5rem 0 1rem 0;
+        }
+        .shield-icon {
+            font-size: 4rem;
+            margin-top: 1.5rem;
+            filter: drop-shadow(0 4px 3px rgba(0,0,0,0.3));
+            animation: pulse 2s infinite;
+        }
+        .shield-icon img {
+            display: block;   /* чтобы margin сработал предсказуемо */
+            margin: 0 auto;   /* по центру */
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }		
+    </style>
+</head>
+
+<body class="p-4">
+    <header class="w-full mb-3 px-4">
+        <nav class="mx-auto flex items-center justify-between bg-white rounded-xl shadow px-4 py-3   max-w-6xl">
+            <div class="text-lg font-semibold text-blue-700">Підбиття підсумків</div>
+            <div>
+                <a href="./index.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition  mx-4" title="Повернутися на головну">
+                <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3l9 8h-3v9h-5v-6H11v6H6v-9H3l9-8z"/></svg> -->
+                    На головну 🏠
+                </a>
+                <a href="./second-main-page.html" class="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg shadow hover:bg-blue-700 transition" title="Повернутися на головну  mx-4">                
+                    До заняття № 2
+                </a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container-fixed space-y-8   max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <section class="text-center bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-6 px-4 rounded-xl shadow-md">
+            <h1 class="text-3xl md:text-4xl font-extrabold mb-2 drop-shadow-lg">✅ IV. Підбиття підсумків: <br><span class="text-yellow-300">"Сертифікат Excel-Знатока"</span></h1>
+            <!-- <p class="text-lg md:text-xl font-light">(5 хв)</p> -->
+        </section>
+
+        <section class="space-y-6">
+            <div>
+                <h3 class="text-xl md:text-2xl font-medium text-blue-500 mb-2">1. Коротке резюме</h3>
+                <p class="text-lg">Швидко пройдемося по ключових можливостях Excel, які ви сьогодні розглянули: <strong>посилання</strong>, <strong>функції</strong> (логічні, математичні, статистичні), <strong>сортування</strong>, <strong>форматування</strong>, <strong>діаграми</strong>, <strong>фільтри</strong>.
+                <p class="font-bold text-xl mt-2 text-green-700 text-center">Наголошую: Excel – це потужний інструмент, який спрощує роботу з даними у багатьох сферах життя!</p>
+            </div>
+            <br><br>
+
+            <div>
+                <h3 class="text-xl md:text-2xl font-medium text-blue-500 mb-2">2. Зворотний зв'язок</h3>
+                <p class="text-lg"><strong>"Один інструмент, що вразив":</strong> назвати одну функцію/можливість Excel, яка вам найбільше сподобалася або здалася найкориснішою.</p>
+                <!-- <p class="text-lg">Заохочуйте питання та обговорення.</p> -->
+            </div>
+            <br><br>
+
+            <div>
+                <h3 class="text-xl md:text-2xl font-medium text-blue-500 mb-2">3. Нагородження</h3>
+                <p class="text-lg mb-6">Час нагородити наших молодих Excel-Знатоків за старання та здобуті знання!</p>
+
+                <div class="certificate-card">
+                    <p class="certificate-title">СЕРТИФІКАТ</p>
+                    <p class="certificate-subtitle">EXCEL-ЗНАТОКА</p>
+                    <p class="certificate-text">Цим підтверджується, що</p>
+                    <p class="certificate-name">[Ім'я Учня/Команди]</p>
+                    <p class="certificate-text">успішно пройшов(-ла) місію</p>
+                    <p class="certificate-text font-bold">"Опрацювання Табличних Даних (MS Excel)"</p>
+                    <!-- <p class="certificate-text mt-4">та готовий(-а) захищати себе та свої дані у цифровому світі!</p> -->
+                    <!-- <div class="shield-icon">🛡️</div> -->
+                    <div class="shield-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/128/732/732220.png" alt="excel icon" width="100">
+                    </div>
+                    <!-- <div class="shield-icon">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM5 5h14v2H5V5zm14 14H5v-2h14v2zM5 9h4v6H5V9zm6 0h8v6h-8V9z"/>
+                        </svg>
+                    </div> -->
+                     
+                    <!-- <div class="excel-icon-seal">
+                        <svg viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V5a2 2 0 00-2-2zM5 5h14v2H5V5zm14 14H5v-2h14v2zM5 9h4v6H5V9zm6 0h8v6h-8V9z"/>
+                        </svg>
+                    </div> -->
+                    <p class="text-sm text-gray-700 mt-2">Дата: [Поточна Дата]</p>
+                    <p class="text-sm text-gray-700 mt-2">Заклад освіти: [Заклад освіти]</p>
+                </div>
+
+                <p class="text-center mt-6 text-gray-600 text-sm"><i>Ви можете роздрукувати цей сертифікат і заповнити його вручну!</i></p>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center text-gray-500 text-sm mt-4    max-w-6xl w-full mx-auto p-6 bg-white rounded-xl shadow-lg">
+        <p>Шкільний літній табір, 2025 р.</p>
+    </footer>
+
+</body>
+</html>
